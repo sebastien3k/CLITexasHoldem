@@ -33,8 +33,9 @@ def loading_animation(duration):
     print("\rLoading complete!")
 
 loading_animation(2)  # Display loading animation for 2 seconds
-
-print_red("Hello World")
+print_yellow("Welcome to Command Line Texas Hold'em")
+print_green("Dev Update 0.1")
+# print_red("Hello World")
 # Define the suits and values
 suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -108,8 +109,8 @@ def determine_winner(player1, player2, community_cards):
     player1_hand = player1.cards + community_cards
     player2_hand = player2.cards + community_cards
 
-    print(player1_hand)
-    print(player2_hand)
+    # print(player1_hand)
+    # print(player2_hand)
     # Determine the best hand for each player using a poker hand evaluation function
     player1_best_hand = evaluate_hand(player1_hand)
     player2_best_hand = evaluate_hand(player2_hand)
@@ -346,7 +347,8 @@ def player_turn(check_count, still_playing, minimum_bet):
         round1 = input("Enter c to check or call and f to fold")
     if round1.lower() == 'f':
         print("You folded!")
-        print(f"Player 2 won ${pot.amount}!")
+        text = f"Player 2 won ${pot.amount}!"
+        print_red(text)
         pot.deposit_winnings(player2)
         still_playing = False
         return check_count, still_playing, minimum_bet
@@ -408,7 +410,8 @@ def opponent_turn(check_count, still_playing, minimum_bet):
         return check_count, still_playing, minimum_bet
     else:
         print("Opponent Folded!")
-        print(f"Player 1 won ${pot.amount}!")
+        text = f"Player 1 won ${pot.amount}!"
+        print_green(text)
         pot.deposit_winnings(player1)
         still_playing = False
         return check_count, still_playing, minimum_bet
@@ -447,12 +450,12 @@ def preflop():
     print(f"Pot amount: {pot.amount}")
     print()
 
-    print("Initial deck size:", len(deck))
+    # print("Initial deck size:", len(deck))
 
     # DEAL CARDS
     player_cards = draw_cards(2)
     player1.assign_cards(player_cards)
-    print(player_cards)
+    # print(player_cards)
     print("Player's cards:")
     for card in player_cards:
         print(f"{card['value']} of {card['suit']}")
@@ -559,10 +562,10 @@ raise_freq_probability = 0.40
 
 while True:
     if player1.total_amount < small_blind:
-        print("Player 1 is out of funds!")
+        print_red("Player 1 is out of funds!")
         break
     elif player2.total_amount < small_blind:
-        print("Player 2 is out of funds!")
+        print_green("Player 2 is out of funds!")
         break
     # "SHUFFLE" DECK (CREATE NEW DECK EACH ROUND)
     deck = [{'suit': suit, 'value': value} for suit in suits for value in values]
@@ -583,7 +586,13 @@ while True:
                     winner = determine_winner(player1, player2, community_cards)
                     if winner != "Tie":
                         winner_player = player1 if winner == player1.name else player2
-                        print(f"{winner_player.name} won ${pot.amount}")
+                        winner_name = winner_player.name
+                        text = f"{winner_name} won {pot.amount}"
+                        if winner_name == "Player 1":
+                            print_green(text)
+                        else:
+                            print_red(text)
+                        # print(f"{winner_player.name} won ${pot.amount}")
                         pot.deposit_winnings(winner_player)
                     else:
                         # Handle tie scenario (if needed)
